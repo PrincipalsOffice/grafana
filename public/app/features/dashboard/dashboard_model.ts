@@ -286,6 +286,7 @@ export class DashboardModel {
   }
 
   processRepeats() {
+    console.log('processing repeats!!!!!!!!!!!!!!!!!');
     if (this.snapshot || this.templating.list.length === 0) {
       return;
     }

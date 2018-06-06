@@ -417,12 +417,16 @@ class SingleStatCtrl extends MetricsPanelCtrl {
       return valueString;
     }
 
-    function getSpan(className, fontSize, value) {
-      if (panel.repeat && !data.scopedVars) {
-        value = panel.repeat;
+    function getSpan(className, fontSize, value, options = {}) {
+      if ((panel.repeatPanelId || panel.repeat) && !data.scopedVars && (options['prefix'] || options['postfix'])) {
+        value = options['prefix'] ? panel.prefix : panel.postfix;
       } else {
         value = templateSrv.replace(value, data.scopedVars);
       }
+      console.log(value, 'valueeeee');
+      console.log(panel);
+      console.log(data);
+      console.log('=============');
       return '<span class="' + className + '" style="font-size:' + fontSize + '">' + value + '</span>';
     }
 
@@ -431,7 +435,7 @@ class SingleStatCtrl extends MetricsPanelCtrl {
 
       if (panel.prefix) {
         var prefix = applyColoringThresholds(data.value, panel.prefix);
-        body += getSpan('singlestat-panel-prefix', panel.prefixFontSize, prefix);
+        body += getSpan('singlestat-panel-prefix', panel.prefixFontSize, prefix, { prefix: true });
       }
 
       var value = applyColoringThresholds(data.value, data.valueFormatted);
@@ -439,7 +443,7 @@ class SingleStatCtrl extends MetricsPanelCtrl {
 
       if (panel.postfix) {
         var postfix = applyColoringThresholds(data.value, panel.postfix);
-        body += getSpan('singlestat-panel-postfix', panel.postfixFontSize, postfix);
+        body += getSpan('singlestat-panel-postfix', panel.postfixFontSize, postfix, { postfix: true });
       }
 
       body += '</div>';
